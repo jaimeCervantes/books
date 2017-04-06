@@ -1,0 +1,33 @@
+{
+  "name": "buscar-libro",
+  "version": "0.0.1",
+  "description": "Saber si un libro existe",
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/jaimeCervantes/buscar-libro.git"
+  },
+  "keywords": [
+    "node.js",
+    "mongodb",
+    "express.js",
+    "polymer"
+  ],
+  "author": "jaime.cervantes.ve@gmail.com",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/jaimeCervantes/buscar-libro/issues"
+  },
+  "homepage": "https://github.com/jaimeCervantes/buscar-libro#readme",
+  "dependencies": {
+    "express": "^4.15.2",
+    "mongodb": "^2.2.25",
+    "wagner-core": "^0.2.0"
+  },
+  "devDependencies": {
+    "body-parser": "^1.17.1"
+  }
+}
