@@ -27,7 +27,6 @@ function get(db) {
         return res.json({
           pagination: results[0],
           items: results[1],
-          page: page,
           categories: results[2]
         });
       })

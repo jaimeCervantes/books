@@ -6,7 +6,7 @@ function getItems(params) {
   var db = DATABASE || params.db;
   return db.collection(COLLECTION || params.collection)
     .find(params.query)
-    .sort({ name: 1})
+    .sort({ _id: 1})
     .skip(params.skip)
     .limit(params.items_per_page || ITEMS_PER_PAGE)
     .toArray()
