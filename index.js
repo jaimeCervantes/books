@@ -2,9 +2,12 @@ var express = require('express');
 var bodyParser = require('body-parser')
 var path = require('path');
 var wagner = require('wagner-core');
+var port = process.env.PORT || '3000';
+
 require('./api/connection.js')(wagner);
 
 var app = express();
+app.set('port', port);
 var books = require('./api/items')(wagner);
 
 app.use(bodyParser.json());
@@ -19,6 +22,6 @@ app.get('*', function(req, res) {
   res.sendFile(path.join(__dirname, '/public/index.html'));
 });
 
-app.listen(3000, function(){
-  console.log('listen on 3000');
+app.listen(port, function(){
+  console.log('listen on ' + port);
 })
