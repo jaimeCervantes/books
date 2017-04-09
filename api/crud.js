@@ -5,9 +5,9 @@ var ITEMS_PER_PAGE;
 function getItems(params) {
   var db = DATABASE || params.db;
   return db.collection(COLLECTION || params.collection)
-    .find(params.query)
-    .sort({ _id: 1})
-    .skip(params.skip)
+    .find(params.query || {})
+    .sort(params.sort || { _id: 1})
+    .skip(params.skip || 0)
     .limit(params.items_per_page || ITEMS_PER_PAGE)
     .toArray()
     .then(function(docs) {
