@@ -1,0 +1,1 @@
+web: npm install && cd ./public/ && bower install && cd .. && node index.js
