@@ -12,6 +12,11 @@ subject to an additional IP rights grant found at http://polymer.github.io/PATEN
 <link rel="import" href="../bower_components/iron-flex-layout/iron-flex-layout-classes.html">
 <link rel="import" href="../bower_components/paper-card/paper-card.html">
 <link rel="import" href="../bower_components/paper-button/paper-button.html">
+<link rel="import" href="../bower_components/iron-icons/iron-icons.html">
+<link rel="import" href="../bower_components/iron-icon/iron-icon.html">
+
+<link rel="import" href="../bower_components/iron-ajax/iron-ajax.html">
+<link rel="import" href="./utils-behavior.html">
 <link rel="import" href="shared-styles.html">
 
 <dom-module id="books-list">
@@ -23,7 +28,7 @@ subject to an additional IP rights grant found at http://polymer.github.io/PATEN
         padding: 10px;
 
         --paper-card: {
-          width: 30%;
+          width: 31%;
           margin-bottom: 20px;
           margin-left: 5px;
           margin-right: 5px;
@@ -35,19 +40,51 @@ subject to an additional IP rights grant found at http://polymer.github.io/PATEN
 
         --paper-card-header-image-text: {
           background-color: white;
-          opacity: 0.7;
+          opacity: 0.9;
+          padding: 1rem;
         }
+
+        --paper-card-content: {
+
+        }
+      }
+
+      .card-content p.description{
+        overflow: hidden;
+        margin-bottom: 0.2rem;
+        text-overflow: ellipsis;
+        display: block;
+        white-space: nowrap;
+      }
+
+      .card-content p {
+        margin-top: 0;
+        padding-top: 0;
+        margin-bottom: 0.2rem;
+      }
+
+      .card-content .highlight {
+        font-weight: bold;
       }
     </style>
     
-    <div class="layout horizontal wrap around-justified">
-      <template is="dom-repeat" items="{{data}}" as="book">
-        <paper-card heading="[[book.name]]" image="[[book.img]]" alt="image" elevation="2" fade-image="true">
+    <iron-ajax
+       auto
+       url='[[getUrl(urlApi, "/books")]]'
+       handle-as="json"
+       last-response="{{data}}"></iron-ajax>
+    
+    
+    <div class="layout horizontal wrap">
+      <template is="dom-repeat" items="[[data.items]]" as="book">
+        <paper-card heading="[[book.name]]" image="[[getImg(book.img)]]" alt="image" elevation="2" fade-image="true">
           <div class="card-content">
-            <p>[[book.description]]</p>
+            <p class="description" hidden$="[[!book.description]]">[[book.description]]</p>
+            <p hidden$="[[!book.author]]"><span class="highlight">Autor:</span> [[book.author]]</p>
+            <p hidden$="[[!book.publisher]]"><span class="highlight">Editorial:</span> [[book.publisher]]</p>
           </div>
           <div class="card-actions">
-            <paper-button>Ver detalle</paper-button>
+            <paper-button><iron-icon icon="subject"></iron-icon>Ver más</paper-button>
           </div>
         </paper-card>
       </template>
@@ -60,13 +97,12 @@ subject to an additional IP rights grant found at http://polymer.github.io/PATEN
       is: 'books-list',
       properties: {
         data: {
-          type: Object,
-          observer: 'dataChanged'
+          type: Object
         }
       },
-      dataChanged: function(newData, oldData){
-        console.log(newData);
-        console.log(oldData);
+      behaviors: [utilsBehavior],
+      getImg(img) {
+        return img || 'https://firebasestorage.googleapis.com/v0/b/books-7fa5a.appspot.com/o/public%2Fsin-img.jpg?alt=media&token=0fcdba04-6b34-4857-a397-6d6054159442';
       }
     });
   </script>
