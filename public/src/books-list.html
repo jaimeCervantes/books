@@ -14,6 +14,7 @@ subject to an additional IP rights grant found at http://polymer.github.io/PATEN
 <link rel="import" href="../bower_components/paper-button/paper-button.html">
 <link rel="import" href="../bower_components/iron-icons/iron-icons.html">
 <link rel="import" href="../bower_components/iron-icon/iron-icon.html">
+<link rel="import" href="../bower_components/paper-input/paper-input.html">
 
 <link rel="import" href="../bower_components/iron-ajax/iron-ajax.html">
 <link rel="import" href="./utils-behavior.html">
@@ -66,14 +67,44 @@ subject to an additional IP rights grant found at http://polymer.github.io/PATEN
       .card-content .highlight {
         font-weight: bold;
       }
+
+      .search {
+        background-color: #fff;
+        padding:1rem;
+        margin-bottom: 1rem;
+      }
+
+      paper-button {
+        text-transform: none;
+      }
+
+
     </style>
     
     <iron-ajax
        auto
+       id="books"
        url='[[getUrl(urlApi, "/books")]]'
-       handle-as="json"
+       handle-as="json",
        last-response="{{data}}"></iron-ajax>
+
+    <iron-ajax
+      id="search"
+      url='[[getUrl(urlApi, "/books/search")]]'
+      handle-as="json",
+      params='[[search]]'
+      last-response="{{data}}"
+      debounce-duration="300"></iron-ajax>
     
+    <form id="employee-form">
+      <paper-material class="layout horizontal wrap search">
+        <div>
+          <paper-input on-keyup="getAll" value="{{search.text}}" label="Buscar libro">
+            <iron-icon icon="search" prefix></iron-icon>
+          </paper-input>
+        </div>       
+      </paper-material>
+    </form>
     
     <div class="layout horizontal wrap">
       <template is="dom-repeat" items="[[data.items]]" as="book">
@@ -88,6 +119,11 @@ subject to an additional IP rights grant found at http://polymer.github.io/PATEN
           </div>
         </paper-card>
       </template>
+      
+      <template is="dom-if" if="[[isEmpty(data.items)]]">
+          <p>Sin resultados</p>
+      </template>
+
     </div>
 
   </template>
@@ -98,11 +134,38 @@ subject to an additional IP rights grant found at http://polymer.github.io/PATEN
       properties: {
         data: {
           type: Object
+        },
+        search: {
+          type: Object,
+          value: {
+            text: ''
+          }
         }
       },
       behaviors: [utilsBehavior],
+      observers:[
+        'searchByText(search.text)'
+      ],
       getImg(img) {
         return img || 'https://firebasestorage.googleapis.com/v0/b/books-7fa5a.appspot.com/o/public%2Fsin-img.jpg?alt=media&token=0fcdba04-6b34-4857-a397-6d6054159442';
+      },
+      searchByText: function(text) {
+        var search = this.$.search;
+
+        if(text!=='' && text ) {
+          search.generateRequest();
+        }
+      },
+      getAll: function(e) {
+        if (e.target.value === '') {
+          this.$.books.generateRequest();
+        }
+      },
+      isEmpty(data) {
+        if( data && data.length && data.length > 0 ) {
+          return false;
+        }
+        return true;
       }
     });
   </script>

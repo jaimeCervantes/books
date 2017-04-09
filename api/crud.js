@@ -18,6 +18,22 @@ function getItems(params) {
     });
 }
 
+function searchItems(params) {
+  var db = DATABASE || params.db;
+  return db.collection(COLLECTION || params.collection)
+    .find(params.query, params.projection || { score: { $meta: 'textScore'} })
+    .sort(params.sort || { score: { $meta: 'textScore'} })
+    .skip(params.skip || 0)
+    .limit(params.items_per_page || ITEMS_PER_PAGE)
+    .toArray()
+    .then(function(docs) {
+      return docs;
+    })
+    .catch(function(err) {
+      return err;
+    });
+}
+
 function count(params) {
   var db = DATABASE || params.db;
   return db.collection(COLLECTION || params.collection)
@@ -75,6 +91,7 @@ module.exports = function(params) {
   return {
     count: count,
     getItems: getItems,
-    getCategories: getCategories
+    getCategories: getCategories,
+    searchItems: searchItems
   }
 }
