@@ -3,8 +3,25 @@ var router = express.Router();
 
 var crudFn = require('./crud');
 var collection = 'books';
-var ITEMS_PER_PAGE = 5;
+var ITEMS_PER_PAGE = 6;
 var crud;
+
+module.exports = function(wagner, params) {
+  wagner.invoke(function(conn) {
+    return conn;
+  })
+  .then(function(db){
+    crud = crudFn({ db: db,
+      collection: collection,
+      items_per_page: ITEMS_PER_PAGE
+    });
+
+    get(db);
+    search(db);
+  });
+
+  return router;
+};
 
 function get(db) {
   router.get('/', function(req, res) {
@@ -60,22 +77,3 @@ function search(db) {
       });
   });
 }
-
-
-
-module.exports = function(wagner, params) {
-  wagner.invoke(function(conn) {
-    return conn;
-  })
-  .then(function(db){
-    crud = crudFn({ db: db,
-      collection: collection,
-      items_per_page: ITEMS_PER_PAGE
-    });
-
-    get(db);
-    search(db);
-  });
-
-  return router;
-};
