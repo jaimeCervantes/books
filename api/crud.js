@@ -2,6 +2,20 @@ var DATABASE;
 var COLLECTION;
 var ITEMS_PER_PAGE;
 
+module.exports = function(params) {
+
+  COLLECTION = params.collection;
+  DATABASE = params.db;
+  ITEMS_PER_PAGE = params.items_per_page || 6;
+
+  return {
+    count: count,
+    getItems: getItems,
+    getCategories: getCategories,
+    searchItems: searchItems
+  }
+}
+
 function getItems(params) {
   var db = DATABASE || params.db;
   return db.collection(COLLECTION || params.collection)
@@ -73,25 +87,11 @@ function getCategories(params) {
           docs.forEach(function(cat) {
               allSum += Number(cat.num);
           });
-          docs.unshift({ _id: 'All', num: allSum });
+          // docs.unshift({ _id: 'All', num: allSum });
           
           return docs;
         })
         .catch(function(err){
           return err;
         });
-}
-
-module.exports = function(params) {
-
-  COLLECTION = params.collection;
-  DATABASE = params.db;
-  ITEMS_PER_PAGE = params.items_per_page || 5;
-
-  return {
-    count: count,
-    getItems: getItems,
-    getCategories: getCategories,
-    searchItems: searchItems
-  }
 }
