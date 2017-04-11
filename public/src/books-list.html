@@ -26,13 +26,12 @@ subject to an additional IP rights grant found at http://polymer.github.io/PATEN
       :host {
         display: block;
 
-        padding: 10px;
+        padding: 1.5rem;
 
         --paper-card: {
           width: 31%;
-          margin-bottom: 20px;
-          margin-left: 5px;
-          margin-right: 5px;
+          margin-bottom: 2rem;
+          margin-right: 3.3333%;
         };
 
         --paper-card-header-image: {
@@ -78,6 +77,37 @@ subject to an additional IP rights grant found at http://polymer.github.io/PATEN
         text-transform: none;
       }
 
+      @media screen and (max-width: 450px) {
+        paper-card {
+          margin-right: 0;
+          width: 100%;
+        }
+
+        :host { 
+          padding: 1rem;
+        }
+      }
+
+      @media screen and (min-width:451px) and (max-width: 800px) {
+        paper-card {
+          margin-right: 4%;
+          width: 48%;
+        }
+
+        paper-card:nth-child(2n) {
+          margin-right: 0;
+        }
+
+        :host { 
+          padding: 1rem;
+        }
+      }
+
+      @media screen and (min-width:801px) {
+        paper-card:nth-child(3n) {
+            margin-right: 0
+        }
+      }
 
     </style>
     
@@ -90,6 +120,7 @@ subject to an additional IP rights grant found at http://polymer.github.io/PATEN
 
     <iron-ajax
       id="search"
+      auto="[[isSearchAuto]]"
       url='[[getUrl(urlApi, "/books/search")]]'
       handle-as="json",
       params='[[search]]'
@@ -106,7 +137,7 @@ subject to an additional IP rights grant found at http://polymer.github.io/PATEN
       </paper-material>
     </form>
     
-    <div class="layout horizontal wrap">
+    <div class="layout horizontal wrap justify">
       <template is="dom-repeat" items="[[data.items]]" as="book">
         <paper-card heading="[[book.name]]" image="[[getImg(book.img)]]" alt="image" elevation="2" fade-image="true">
           <div class="card-content">
@@ -140,6 +171,15 @@ subject to an additional IP rights grant found at http://polymer.github.io/PATEN
           value: {
             text: ''
           }
+        },
+        categories: {
+          type: Array,
+          computed: 'setCategories(data.categories)',
+          notify: true
+        },
+        isSearchAuto: {
+          type: Boolean,
+          value: false
         }
       },
       behaviors: [utilsBehavior],
@@ -153,7 +193,8 @@ subject to an additional IP rights grant found at http://polymer.github.io/PATEN
         var search = this.$.search;
 
         if(text!=='' && text ) {
-          search.generateRequest();
+          this.set('isSearchAuto', true);
+          // search.generateRequest();
         }
       },
       getAll: function(e) {
@@ -166,6 +207,9 @@ subject to an additional IP rights grant found at http://polymer.github.io/PATEN
           return false;
         }
         return true;
+      },
+      setCategories(categories) {
+        return categories;
       }
     });
   </script>
