@@ -69,9 +69,13 @@ subject to an additional IP rights grant found at http://polymer.github.io/PATEN
       <!-- Drawer content -->
       <app-drawer id="drawer">
         <app-toolbar>Categorias</app-toolbar>
-        <iron-selector selected="[[page]]" attr-for-selected="name" class="drawer-list" role="navigation">
-          <a name="list" href="/">Libros</a>
+        <iron-selector selected="{{categoryName}}" attr-for-selected="name" class="drawer-list" role="navigation">
+          <a name="todas" href="/categoria/todas">Todas</a>
+          <template is="dom-repeat" items=[[categories]] as=cat index-as=index>
+           <a name="[[cat._id]]" href$="/categoria/[[cat._id]]">[[cat._id]]</a>          
+          </template>
         </iron-selector>
+
       </app-drawer>
 
       <!-- Main content -->
@@ -80,7 +84,7 @@ subject to an additional IP rights grant found at http://polymer.github.io/PATEN
         <app-header condenses reveals effects="waterfall">
           <app-toolbar>
             <paper-icon-button icon="books-icons:menu" drawer-toggle></paper-icon-button>
-            <div main-title>Libros</div>
+            <div main-title>Libros</div> <div style="text-align: right">[[categoryName]]</div>
           </app-toolbar>
         </app-header>
 
@@ -89,7 +93,7 @@ subject to an additional IP rights grant found at http://polymer.github.io/PATEN
             attr-for-selected="name"
             fallback-selection="view404"
             role="main">
-          <books-list name="list"></books-list>
+          <books-list name="categoria" route="[[subroute]]" categories="{{categories}}"></books-list>
           <books-view404 name="view404"></books-view404>
         </iron-pages>
       </app-header-layout>
@@ -105,6 +109,13 @@ subject to an additional IP rights grant found at http://polymer.github.io/PATEN
           type: String,
           reflectToAttribute: true,
           observer: '_pageChanged',
+        },
+        categories: {
+          type: Array
+        },
+        categoryName: {
+          type: String,
+          value: 'Todas'
         }
       },
       observers: [
@@ -112,7 +123,7 @@ subject to an additional IP rights grant found at http://polymer.github.io/PATEN
       ],
 
       _routePageChanged: function(page) {
-        this.page = page || 'list';
+        this.page = page || 'categoria';
 
         if (!this.$.drawer.persistent) {
           this.$.drawer.close();
@@ -121,20 +132,22 @@ subject to an additional IP rights grant found at http://polymer.github.io/PATEN
 
       _pageChanged: function(page) {
         var validPages = {
-          list: true
+          categoria: 'list'
         }
 
-        if(!validPages[page]) {
-          page = 'view404';
+        var validPage = validPages[page];
+
+        if(!validPage) {
+          validPage = 'view404';
         }
         // Load page import on demand.
-        var resolvedPageUrl = this.resolveUrl('books-' + page + '.html');
+        var resolvedPageUrl = this.resolveUrl('books-' + validPage + '.html');
         this.importHref(resolvedPageUrl, null, null, true);
       },
 
       _showPage404: function() {
         this.page = 'view404';
-      },
+      }
     });
   </script>
 </dom-module>

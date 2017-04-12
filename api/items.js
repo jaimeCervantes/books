@@ -24,8 +24,13 @@ module.exports = function(wagner, params) {
 };
 
 function get(db) {
-  router.get('/', function(req, res) {
+  router.get('/(:category)?', function(req, res) {
     var query = {};
+
+    if(req.params.category && req.params.category!=='todas') {
+      query.category = req.params.category
+    }
+
     var page = req.query.page ? Number(req.query.page) : 0;
     var numPages = 0;
     var iterable = [ 
@@ -48,6 +53,7 @@ function get(db) {
       });
   });
 }
+
 
 function search(db) {
   router.get('/search', function(req, res) {
