@@ -138,7 +138,10 @@ subject to an additional IP rights grant found at http://polymer.github.io/PATEN
           <paper-input on-keyup="getAll" value="{{search.text}}" label="Buscar libro">
             <iron-icon icon="search" prefix></iron-icon>
           </paper-input>
-        </div>       
+        </div>
+        <div>
+          búsqueda en [[search.category]]  
+        </div>
       </paper-material>
     </form>
     
@@ -174,7 +177,8 @@ subject to an additional IP rights grant found at http://polymer.github.io/PATEN
         search: {
           type: Object,
           value: {
-            text: ''
+            text: '',
+            category: 'todas'
           }
         },
         categories: {
@@ -189,13 +193,13 @@ subject to an additional IP rights grant found at http://polymer.github.io/PATEN
         route: Object,
         routeData: Object,
         url: {
-          type: String,
-          computed: 'getUrlCategory(routeData.category)'
+          type: String
         }
       },
       behaviors: [utilsBehavior],
       observers:[
-        'searchByText(search.text)'
+        'searchByText(search.text)',
+        'getUrlCategory(routeData.category)'
       ],
       getImg(img) {
         return img || 'https://firebasestorage.googleapis.com/v0/b/books-7fa5a.appspot.com/o/public%2Fsin-img.jpg?alt=media&token=0fcdba04-6b34-4857-a397-6d6054159442';
@@ -227,8 +231,10 @@ subject to an additional IP rights grant found at http://polymer.github.io/PATEN
         return this.categories;
       },
       getUrlCategory: function(category) {
-        var subroute = '/books/' + ( category || "" );
-        return this.getUrl(this.urlApi, subroute);
+        var subroute = '/books/category/' + ( category || "todas" );
+        this.set('isSearchAuto', false);
+        this.set('search.category', category);
+        this.set('url', this.getUrl(this.urlApi, subroute));
       }
     });
   </script>

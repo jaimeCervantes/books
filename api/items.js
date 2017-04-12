@@ -5,6 +5,7 @@ var crudFn = require('./crud');
 var collection = 'books';
 var ITEMS_PER_PAGE = 6;
 var crud;
+var allCategories = 'todas';
 
 module.exports = function(wagner, params) {
   wagner.invoke(function(conn) {
@@ -24,10 +25,10 @@ module.exports = function(wagner, params) {
 };
 
 function get(db) {
-  router.get('/(:category)?', function(req, res) {
+  router.get('/category/(:category)?', function(req, res) {
     var query = {};
 
-    if(req.params.category && req.params.category!=='todas') {
+    if(req.params.category && req.params.category !== allCategories) {
       query.category = req.params.category
     }
 
@@ -56,13 +57,17 @@ function get(db) {
 
 
 function search(db) {
-  router.get('/search', function(req, res) {
+  router.get('/search/', function(req, res) {
     var query = {};
     var page = req.query.page ? Number(req.query.page) : 0;
     var numPages = 0;
 
     if(req.query.text) {
       query.$text = { $search: req.query.text };
+    }
+
+    if(req.query.category && req.query.category !== allCategories) {
+      query.category = req.query.category;
     }
 
     var iterable = [ 
