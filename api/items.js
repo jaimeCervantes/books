@@ -5,7 +5,7 @@ var crudFn = require('./crud');
 var collection = 'books';
 var ITEMS_PER_PAGE = 6;
 var crud;
-var allCategories = 'Todas';
+var allCategories = 'todas';
 
 module.exports = function(wagner, params) {
   wagner.invoke(function(conn) {

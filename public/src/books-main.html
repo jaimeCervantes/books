@@ -70,7 +70,7 @@ subject to an additional IP rights grant found at http://polymer.github.io/PATEN
 
       #search-form .self-end {
         padding-bottom:0.8rem;
-        text-transform: capitalize
+        text-transform: capitalize;
         margin-left: 0.3rem;
         padding-left: 0.3rem;
       }
@@ -264,7 +264,7 @@ subject to an additional IP rights grant found at http://polymer.github.io/PATEN
         return this.categories;
       },
       getUrlCategory: function(category) {
-        var cat = ( category || "Todas" )
+        var cat = ( category || "todas" )
         var subroute = '/books/category/' + cat;
         this.set('isSearchAuto', false);
         this.set('search.category', cat);
