@@ -157,7 +157,7 @@ subject to an additional IP rights grant found at http://polymer.github.io/PATEN
           </paper-input>
         </div>
         <div>
-          búsqueda en [[search.category]]  
+          búsqueda en {{search.category}}
         </div>
       </paper-material>
     </form>
@@ -197,7 +197,7 @@ subject to an additional IP rights grant found at http://polymer.github.io/PATEN
           type: Object,
           value: {
             text: '',
-            category: 'todas'
+            category: 'Todas'
           }
         },
         categories: {
@@ -254,9 +254,10 @@ subject to an additional IP rights grant found at http://polymer.github.io/PATEN
         return this.categories;
       },
       getUrlCategory: function(category) {
-        var subroute = '/books/category/' + ( category || "todas" );
+        var cat = ( category || "Todas" )
+        var subroute = '/books/category/' + cat;
         this.set('isSearchAuto', false);
-        this.set('search.category', category);
+        this.set('search.category', cat);
         this.set('url', this.getUrl(this.urlApi, subroute));
       }
     });
