@@ -15,6 +15,7 @@ subject to an additional IP rights grant found at http://polymer.github.io/PATEN
 <link rel="import" href="../bower_components/iron-icons/iron-icons.html">
 <link rel="import" href="../bower_components/iron-icon/iron-icon.html">
 <link rel="import" href="../bower_components/paper-input/paper-input.html">
+<link rel="import" href="../bower_components/paper-progress/paper-progress.html">
 
 <link rel="import" href="../bower_components/app-route/app-route.html">
 <link rel="import" href="../bower_components/iron-ajax/iron-ajax.html">
@@ -23,7 +24,7 @@ subject to an additional IP rights grant found at http://polymer.github.io/PATEN
 
 <dom-module id="books-list">
   <template>
-    <style include="shared-styles iron-flex">
+    <style include="shared-styles iron-flex iron-positioning iron-flex-alignment">
       :host {
         display: block;
 
@@ -71,7 +72,6 @@ subject to an additional IP rights grant found at http://polymer.github.io/PATEN
       .search {
         background-color: #fff;
         padding:1rem;
-        margin-bottom: 1rem;
       }
 
       paper-button {
@@ -110,6 +110,20 @@ subject to an additional IP rights grant found at http://polymer.github.io/PATEN
         }
       }
 
+      paper-progress {
+        display: block;
+        width: 100%;
+      }
+      
+      paper-progress.blue {
+        --paper-progress-active-color: var(--paper-light-blue-500);
+        --paper-progress-secondary-color: var(--paper-light-blue-100);
+      }
+    
+      .books-wrapper {
+        margin-top: 1rem;
+      }
+
     </style>
 
     <app-route route="[[route]]" pattern="/:category" 
@@ -121,7 +135,9 @@ subject to an additional IP rights grant found at http://polymer.github.io/PATEN
        id="books"
        url='[[url]]'
        handle-as="json",
-       last-response="{{data}}"></iron-ajax>
+       last-response="{{data}}"
+       loading="{{loading}}"
+       ></iron-ajax>
 
     <iron-ajax
       id="search"
@@ -130,7 +146,8 @@ subject to an additional IP rights grant found at http://polymer.github.io/PATEN
       handle-as="json",
       params='[[search]]'
       last-response="{{data}}"
-      debounce-duration="300"></iron-ajax>
+      debounce-duration="300"
+      loading="{{loading}}"></iron-ajax>
     
     <form id="employee-form">
       <paper-material class="layout horizontal wrap search">
@@ -145,7 +162,9 @@ subject to an additional IP rights grant found at http://polymer.github.io/PATEN
       </paper-material>
     </form>
     
-    <div class="layout horizontal wrap justify">
+    <paper-progress hidden="[[!loading]]"indeterminate class="slow blue"></paper-progress>
+    
+    <div class="books-wrapper layout horizontal wrap justify">
       <template is="dom-repeat" items="[[data.items]]" as="book">
         <paper-card heading="[[book.name]]" image="[[getImg(book.img)]]" alt="image" elevation="2" fade-image="true">
           <div class="card-content">
@@ -194,6 +213,10 @@ subject to an additional IP rights grant found at http://polymer.github.io/PATEN
         routeData: Object,
         url: {
           type: String
+        },
+        loading: {
+          type: Boolean,
+          value: true
         }
       },
       behaviors: [utilsBehavior],
