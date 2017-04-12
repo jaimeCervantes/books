@@ -114,56 +114,7 @@ subject to an additional IP rights grant found at http://polymer.github.io/PATEN
         display: block;
         width: 100%;
       }
-      
-      paper-progress.blue {
-        --paper-progress-active-color: var(--paper-light-blue-500);
-        --paper-progress-secondary-color: var(--paper-light-blue-100);
-      }
-    
-      .books-wrapper {
-        margin-top: 1rem;
-      }
-
-    </style>
-
-    <app-route route="[[route]]" pattern="/:category" 
-      data="{{routeData}}" tail="{{tail}}">
-    </app-route>
-    
-    <iron-ajax
-       auto
-       id="books"
-       url='[[url]]'
-       handle-as="json",
-       last-response="{{data}}"
-       loading="{{loading}}"
-       ></iron-ajax>
-
-    <iron-ajax
-      id="search"
-      auto="[[isSearchAuto]]"
-      url='[[getUrl(urlApi, "/books/search")]]'
-      handle-as="json",
-      params='[[search]]'
-      last-response="{{data}}"
-      debounce-duration="300"
-      loading="{{loading}}"></iron-ajax>
-    
-    <form id="employee-form">
-      <paper-material class="layout horizontal wrap search">
-        <div>
-          <paper-input on-keyup="getAll" value="{{search.text}}" label="Buscar libro">
-            <iron-icon icon="search" prefix></iron-icon>
-          </paper-input>
-        </div>
-        <div>
-          búsqueda en {{search.category}}
-        </div>
-      </paper-material>
-    </form>
-    
-    <paper-progress hidden="[[!loading]]"indeterminate class="slow blue"></paper-progress>
-    
+    </style>    
     <div class="books-wrapper layout horizontal wrap justify">
       <template is="dom-repeat" items="[[data.items]]" as="book">
         <paper-card heading="[[book.name]]" image="[[getImg(book.img)]]" alt="image" elevation="2" fade-image="true">
@@ -193,72 +144,21 @@ subject to an additional IP rights grant found at http://polymer.github.io/PATEN
         data: {
           type: Object
         },
-        search: {
-          type: Object,
-          value: {
-            text: '',
-            category: 'Todas'
-          }
-        },
-        categories: {
-          type: Array,
-          computed: 'setCategories(data.categories)',
-          notify: true
-        },
-        isSearchAuto: {
-          type: Boolean,
-          value: false
-        },
-        route: Object,
-        routeData: Object,
-        url: {
-          type: String
-        },
         loading: {
           type: Boolean,
-          value: true
+          value: true,
+          notify: true
         }
       },
       behaviors: [utilsBehavior],
-      observers:[
-        'searchByText(search.text)',
-        'getUrlCategory(routeData.category)'
-      ],
       getImg(img) {
         return img || 'https://firebasestorage.googleapis.com/v0/b/books-7fa5a.appspot.com/o/public%2Fsin-img.jpg?alt=media&token=0fcdba04-6b34-4857-a397-6d6054159442';
-      },
-      searchByText: function(text) {
-        var search = this.$.search;
-
-        if(text!=='' && text ) {
-          this.set('isSearchAuto', true);
-          // search.generateRequest();
-        }
-      },
-      getAll: function(e) {
-        if (e.target.value === '') {
-          this.$.books.generateRequest();
-        }
       },
       isEmpty(data) {
         if( data && data.length && data.length > 0 ) {
           return false;
         }
         return true;
-      },
-      setCategories(categories) {
-        if(categories) {
-          return categories;  
-        }
-
-        return this.categories;
-      },
-      getUrlCategory: function(category) {
-        var cat = ( category || "Todas" )
-        var subroute = '/books/category/' + cat;
-        this.set('isSearchAuto', false);
-        this.set('search.category', cat);
-        this.set('url', this.getUrl(this.urlApi, subroute));
       }
     });
   </script>
