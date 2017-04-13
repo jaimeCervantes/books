@@ -19,10 +19,22 @@ module.exports = function(wagner, params) {
 
     get(db);
     search(db);
+  }).catch(function(err) {
+    sendNoConnection();
   });
 
   return router;
 };
+
+
+function sendNoConnection() {
+  router.get('*', function(req, res){
+    return res.json({
+      error: 'No connection',
+      msg: "Lo sentimos no tenemos datos que mostrar" 
+    });
+  })
+}
 
 function get(db) {
   router.get('/category/(:category)?', function(req, res) {
