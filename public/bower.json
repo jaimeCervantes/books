@@ -21,7 +21,8 @@
     "iron-icons": "PolymerElements/iron-icons#^1.2.0",
     "paper-input": "PolymerElements/paper-input#^1.1.23",
     "paper-progress": "PolymerElements/paper-progress#^1.0.11",
-    "paper-badge": "PolymerElements/paper-badge#^1.1.4"
+    "paper-badge": "PolymerElements/paper-badge#^1.1.4",
+    "paper-spinner": "PolymerElements/paper-spinner#^1.2.1"
   },
   "devDependencies": {
     "web-component-tester": "^4.0.0"
