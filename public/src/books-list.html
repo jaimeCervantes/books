@@ -95,7 +95,8 @@
 
       .see-more-container {
         display: block;
-        margin: 0 auto;
+        width: 100%;
+        text-align: center;
       }
       .see-more {
         padding-right: 50px;
@@ -175,7 +176,11 @@
         },
         currentPage: {
           type: Number,
-          value: 0 
+          value: 0,
+        },
+        search: {
+          type: Object,
+          notify: true
         }
       },
       behaviors: [utilsBehavior],
@@ -200,7 +205,11 @@
       },
       _getMoreBooks: function() {
         this.set('currentPage', this.currentPage + 1);
-        this.set('params.page', this.currentPage);
+        if(this.search.text!=='') {
+          this.set('search.page', this.currentPage);
+        } else {
+          this.set('params.page', this.currentPage);
+        }
       }
     });
   </script>
