@@ -5,7 +5,6 @@
 <link rel="import" href="../bower_components/iron-icons/iron-icons.html">
 <link rel="import" href="../bower_components/iron-icon/iron-icon.html">
 <link rel="import" href="../bower_components/paper-spinner/paper-spinner.html">
-<link rel="import" href="../bower_components/paper-spinner/paper-spinner-lite.html">
 
 <link rel="import" href="./utils-behavior.html">
 
@@ -31,10 +30,6 @@
           background-color: white;
           opacity: 0.9;
           padding: 1rem;
-        }
-
-        --paper-card-content: {
-
         }
       }
 
@@ -108,8 +103,9 @@
         font-weight: 300;
         text-transform: none;
       }
-      .see-more paper-spinner-lite {
+      .see-more paper-spinner {
         margin-right: 10px;
+        --paper-spinner-layer-1-color: var(--paper-pink-500);
       }
 
       paper-button.green {
@@ -121,10 +117,6 @@
       }
       paper-button.disabled {
         color: white;
-      }
-      
-      paper-spinner-lite.pink {
-        --paper-spinner-color: var(--paper-pink-500);
       }
     </style>
     <div class="books-wrapper layout horizontal wrap justify">
@@ -144,7 +136,7 @@
       <template is="dom-if" if="[[hasMoreBooks(data.pagination.pages)]]">
         <div class="see-more-container">
           <paper-button raised on-tap="_getMoreBooks" class="green see-more">
-            <paper-spinner-lite active="[[loading]]" class="pink"></paper-spinner-lite>Ver más libros
+            <paper-spinner active="[[loading]]" class="pink"></paper-spinner>Ver más libros
           </paper-button>  
         </div>
       </template>
