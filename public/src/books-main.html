@@ -161,7 +161,7 @@
             attr-for-selected="name"
             fallback-selection="view404"
             role="main">
-          <books-list name="categoria" route="[[subroute]]" data="[[data]]" loading="[[loading]]" params="{{params}}" search="{{search}}" books="[[books]]" current-page="[[currentPage]]"></books-list>
+          <books-list name="categoria" route="[[subroute]]" data="[[data]]" loading="[[loading]]" params="{{params}}" search="{{search}}" books="[[books]]" current-page="{{currentPage}}"></books-list>
           <books-view404 name="view404"></books-view404>
         </iron-pages>
       </app-header-layout>
@@ -259,6 +259,8 @@
         if(text!=='' && text ) {
           this.set('books', []);
           this.set('currentPage', 0);
+          delete this.params.page;
+          delete this.search.page;
           this.set('isSearchAuto', true);
           // search.generateRequest();
         }

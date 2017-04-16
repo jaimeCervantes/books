@@ -177,6 +177,7 @@
         currentPage: {
           type: Number,
           value: 0,
+          notify: true
         },
         search: {
           type: Object,
@@ -201,7 +202,7 @@
         this.set('books', books.concat(this.data.items) );
       },
       hasMoreBooks: function(pages) {
-        return (pages > this.currentPage);
+        return ((pages-1) > this.currentPage);
       },
       _getMoreBooks: function() {
         this.set('currentPage', this.currentPage + 1);
