@@ -186,23 +186,23 @@
       observers:[
         '_getData(data)'
       ],
-      getImg(img) {
+      getImg: function(img) {
         return img || 'https://firebasestorage.googleapis.com/v0/b/books-7fa5a.appspot.com/o/public%2Fsin-img.jpg?alt=media&token=0fcdba04-6b34-4857-a397-6d6054159442';
       },
-      isEmpty(data) {
+      isEmpty: function(data) {
         if( data && data.length && data.length > 0 ) {
           return false;
         }
         return true;
       },
-      _getData(data) {
+      _getData: function(data) {
         var books = this.books || [];
         this.set('books', books.concat(this.data.items) );
       },
-      hasMoreBooks(pages) {
+      hasMoreBooks: function(pages) {
         return (pages > this.currentPage);
       },
-      _getMoreBooks() {
+      _getMoreBooks: function() {
         this.set('currentPage', this.currentPage + 1);
         this.set('params.page', this.currentPage);
       }
