@@ -15,7 +15,7 @@ subject to an additional IP rights grant found at http://polymer.github.io/PATEN
 <link rel="import" href="../bower_components/iron-icons/iron-icons.html">
 <link rel="import" href="../bower_components/iron-icon/iron-icon.html">
 <link rel="import" href="../bower_components/paper-input/paper-input.html">
-<link rel="import" href="../bower_components/paper-progress/paper-progress.html">
+<link rel="import" href="../bower_components/paper-spinner/paper-spinner-lite.html">
 
 <link rel="import" href="../bower_components/app-route/app-route.html">
 <link rel="import" href="../bower_components/iron-ajax/iron-ajax.html">
@@ -109,9 +109,39 @@ subject to an additional IP rights grant found at http://polymer.github.io/PATEN
             margin-right: 0
         }
       }
+
+      .see-more-container {
+        display: block;
+        margin: 0 auto;
+      }
+      .see-more {
+        padding-right: 50px;
+        background-color: var(--paper-light-green-500);
+        color: #fff;
+        font-weight: 300;
+        text-transform: none;
+      }
+      .see-more paper-spinner {
+        margin-right: 10px;
+      }
+
+      paper-button.green {
+        background-color: var(--paper-green-500);
+        color: white;
+      }
+      paper-button.green[active] {
+        background-color: var(--paper-red-500);
+      }
+      paper-button.disabled {
+        color: white;
+      }
+      
+      paper-spinner-lite.pink {
+        --paper-spinner-color: var(--paper-pink-500);
+      }
     </style>
     <div class="books-wrapper layout horizontal wrap justify">
-      <template is="dom-repeat" items="[[data.items]]" as="book">
+      <template is="dom-repeat" items="[[books]]" as="book">
         <paper-card heading="[[book.name]]" image="[[getImg(book.img)]]" alt="image" elevation="2" fade-image="true">
           <div class="card-content">
             <p class="description" hidden$="[[!book.description]]">[[book.description]]</p>
@@ -122,6 +152,14 @@ subject to an additional IP rights grant found at http://polymer.github.io/PATEN
             <paper-button><iron-icon icon="subject"></iron-icon>Ver más</paper-button>
           </div>
         </paper-card>
+      </template>
+
+      <template is="dom-if" if="[[hasMoreBooks(data.pagination.pages)]]">
+        <div class="see-more-container">
+          <paper-button raised on-tap="_getMoreBooks" class="green see-more">
+            <paper-spinner-lite active="[[loading]]" class="pink"></paper-spinner-lite>Ver más libros
+          </paper-button>  
+        </div>
       </template>
       
       <template is="dom-if" if="[[isEmpty(data.items)]]">
@@ -139,13 +177,28 @@ subject to an additional IP rights grant found at http://polymer.github.io/PATEN
         data: {
           type: Object
         },
+        params: {
+          type: Object,
+          notify: true
+        },
         loading: {
           type: Boolean,
           value: true,
           notify: true
-        }
+        },
+        books: {
+          type: Array,
+          notify: true,
+        },
+        currentPage: {
+          type: Number,
+          value: 0 
+        },
       },
       behaviors: [utilsBehavior],
+      observers:[
+        '_getData(data)'
+      ],
       getImg(img) {
         return img || 'https://firebasestorage.googleapis.com/v0/b/books-7fa5a.appspot.com/o/public%2Fsin-img.jpg?alt=media&token=0fcdba04-6b34-4857-a397-6d6054159442';
       },
@@ -154,6 +207,17 @@ subject to an additional IP rights grant found at http://polymer.github.io/PATEN
           return false;
         }
         return true;
+      },
+      _getData(data) {
+        var books = this.books || [];
+        this.set('books', books.concat(this.data.items) );
+      },
+      hasMoreBooks(pages) {
+        return (pages > this.currentPage);
+      },
+      _getMoreBooks() {
+        this.set('currentPage', this.currentPage + 1);
+        this.set('params.page', this.currentPage);
       }
     });
   </script>

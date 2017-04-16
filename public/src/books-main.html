@@ -22,6 +22,7 @@ subject to an additional IP rights grant found at http://polymer.github.io/PATEN
 <link rel="import" href="../bower_components/iron-selector/iron-selector.html">
 <link rel="import" href="../bower_components/paper-badge/paper-badge.html">
 <link rel="import" href="../bower_components/paper-icon-button/paper-icon-button.html">
+<link rel="import" href="../bower_components/paper-progress/paper-progress.html">
 <link rel="import" href="books-icons.html">
 
 <link rel="import" href="./utils-behavior.html">
@@ -98,8 +99,8 @@ subject to an additional IP rights grant found at http://polymer.github.io/PATEN
       }
 
       paper-progress.red {
-        --paper-progress-active-color: var(--paper-red-500);
-        --paper-progress-secondary-color: var(--paper-red-100);
+        --paper-progress-active-color: var(--paper-pink-300);
+        --paper-progress-secondary-color: var(--paper-pink-100);
       }
 
     </style>
@@ -120,6 +121,7 @@ subject to an additional IP rights grant found at http://polymer.github.io/PATEN
        url='[[url]]'
        handle-as="json",
        last-response="{{data}}"
+       params="[[params]]"
        loading="{{loading}}"
        ></iron-ajax>
 
@@ -167,7 +169,7 @@ subject to an additional IP rights grant found at http://polymer.github.io/PATEN
             attr-for-selected="name"
             fallback-selection="view404"
             role="main">
-          <books-list name="categoria" route="[[subroute]]" data="[[data]]" loading="[[loading]]"></books-list>
+          <books-list name="categoria" route="[[subroute]]" data="[[data]]" loading="[[loading]]" params="{{params}}" books="{{books}}"></books-list>
           <books-view404 name="view404"></books-view404>
         </iron-pages>
       </app-header-layout>
@@ -194,7 +196,7 @@ subject to an additional IP rights grant found at http://polymer.github.io/PATEN
           value: 'Todas'
         },
         data: {
-          type: Object
+          type: Object,
         },
         search: {
           type: Object,
@@ -212,6 +214,16 @@ subject to an additional IP rights grant found at http://polymer.github.io/PATEN
           type: Boolean,
           value: false
         },
+        params: {
+          type: Object,
+          value: {}
+        },
+        books: {
+          type: Array,
+          value: function() {
+            return [];
+          }
+        }
       },
       behaviors: [utilsBehavior],
       observers: [
@@ -219,7 +231,6 @@ subject to an additional IP rights grant found at http://polymer.github.io/PATEN
         'searchByText(search.text)',
         'getUrlCategory(routeDataCat.category)'
       ],
-
       _routePageChanged: function(page) {
         this.page = page || 'categoria';
 
@@ -250,6 +261,7 @@ subject to an additional IP rights grant found at http://polymer.github.io/PATEN
         var search = this.$.search;
 
         if(text!=='' && text ) {
+          this.set('books', []);
           this.set('isSearchAuto', true);
           // search.generateRequest();
         }
@@ -268,8 +280,10 @@ subject to an additional IP rights grant found at http://polymer.github.io/PATEN
       getUrlCategory: function(category) {
         var cat = ( category || "todas" )
         var subroute = '/books/category/' + cat;
+        this.set('books', []);
         this.set('isSearchAuto', false);
         this.set('search.category', cat);
+        this.set('search.text', '');
         this.set('url', this.getUrl(this.urlApi, subroute));
       }
     });
