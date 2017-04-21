@@ -255,11 +255,9 @@
       },
       searchByText: function(text) {
         var search = this.$.search;
-
         if(text!=='' && text ) {
           this._resetRequestData();
           this.set('isSearchAuto', true);
-          // search.generateRequest();
         }
       },
       getAll: function(e) {
@@ -278,12 +276,12 @@
         var cat = ( category || "todas" )
         var subroute = '/books/category/' + cat;
         this._resetRequestData()
-        this.set('isSearchAuto', false);
         this.set('search.category', cat);
         this.set('search.text', '');
         this.set('url', this.getUrl(this.urlApi, subroute));
       },
       _resetRequestData: function() {
+        this.set('isSearchAuto', false);
         this.set('books', []);
         this.set('currentPage', 0);
         delete this.params.page;
