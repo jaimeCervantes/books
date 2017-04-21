@@ -69,7 +69,7 @@
       }
 
       paper-badge {
-        margin-top: 1.2rem; 
+        margin-top: 1.2rem;
       }
 
       paper-input.search {
@@ -130,14 +130,13 @@
     <app-drawer-layout fullbleed>
       <!-- Drawer content -->
       <app-drawer id="drawer">
-        <app-toolbar>Categorias</app-toolbar>
+        <app-toolbar>Categorías</app-toolbar>
         <iron-selector selected="{{categoryName}}" attr-for-selected="name" class="drawer-list" role="navigation">
           <a name="Todas" href="/categoria/todas">Todas</a>
           <template is="dom-repeat" items=[[categories]] as=cat index-as=index>
            <a name="[[cat._id]]" href$="/categoria/[[cat._id]]">[[cat._id]] <paper-badge label="[[cat.num]]"></paper-badge></a>          
           </template>
         </iron-selector>
-
       </app-drawer>
 
       <!-- Main content -->
@@ -145,13 +144,14 @@
 
         <app-header condenses reveals effects="waterfall">
           <app-toolbar>
-            <paper-icon-button icon="books-icons:menu" drawer-toggle></paper-icon-button>
             <form id="search-form" class="flex-2 layout horizontal center-center">
               <paper-input class="search" value="{{search.text}}" label="Buscar libro">
                 <iron-icon icon="search" prefix></iron-icon>
               </paper-input>
               <div class="self-end">en {{search.category}}</div>
             </form>
+            <div main-title></div>
+            <paper-icon-button icon="books-icons:menu" drawer-toggle></paper-icon-button>
           </app-toolbar>
           <paper-progress hidden="[[!loading]]"indeterminate class="red"></paper-progress>
         </app-header>
