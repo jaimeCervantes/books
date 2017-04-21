@@ -147,7 +147,7 @@
           <app-toolbar>
             <paper-icon-button icon="books-icons:menu" drawer-toggle></paper-icon-button>
             <form id="search-form" class="flex-2 layout horizontal center-center">
-              <paper-input class="search" on-keyup="getAll" value="{{search.text}}" label="Buscar libro">
+              <paper-input class="search" value="{{search.text}}" label="Buscar libro">
                 <iron-icon icon="search" prefix></iron-icon>
               </paper-input>
               <div class="self-end">en {{search.category}}</div>
@@ -169,7 +169,8 @@
   </template>
 
   <script>
-    Polymer({
+  'use strict';
+    window.Polymer({
       is: 'books-main',
 
       properties: {
@@ -180,9 +181,6 @@
         },
         routeData: Object,
         routeDataCat: Object,
-        categories: {
-          type: Array
-        },
         categoryName: {
           type: String,
           value: 'Todas'
@@ -221,7 +219,7 @@
           value: 0
         }
       },
-      behaviors: [utilsBehavior],
+      behaviors: [window.BOOKS.utilsBehavior],
       observers: [
         '_routePageChanged(routeData.page)',
         'searchByText(search.text)',
@@ -234,11 +232,10 @@
           this.$.drawer.close();
         }
       },
-
       _pageChanged: function(page) {
         var validPages = {
           categoria: 'list'
-        }
+        };
 
         var validPage = validPages[page];
 
@@ -249,22 +246,22 @@
         var resolvedPageUrl = this.resolveUrl('books-' + validPage + '.html');
         this.importHref(resolvedPageUrl, null, null, true);
       },
-
       _showPage404: function() {
         this.page = 'view404';
       },
       searchByText: function(text) {
-        var search = this.$.search;
         if(text!=='' && text ) {
           this._resetRequestData();
           this.set('isSearchAuto', true);
         }
+
+        if (text && text==='') {
+          this.getAll();
+        }
       },
-      getAll: function(e) {
-        if (e.target.value === '') {
+      getAll: function() {
           this._resetRequestData();
           this.$.books.generateRequest();
-        }
       },
       setCategories: function(categories) {
         if(categories) {
@@ -273,9 +270,9 @@
         return this.categories;
       },
       getUrlCategory: function(category) {
-        var cat = ( category || "todas" )
+        var cat = ( category || "todas" );
         var subroute = '/books/category/' + cat;
-        this._resetRequestData()
+        this._resetRequestData();
         this.set('search.category', cat);
         this.set('search.text', '');
         this.set('url', this.getUrl(this.urlApi, subroute));
