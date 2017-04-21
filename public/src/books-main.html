@@ -257,16 +257,14 @@
         var search = this.$.search;
 
         if(text!=='' && text ) {
-          this.set('books', []);
-          this.set('currentPage', 0);
-          delete this.params.page;
-          delete this.search.page;
+          this._resetRequestData();
           this.set('isSearchAuto', true);
           // search.generateRequest();
         }
       },
       getAll: function(e) {
         if (e.target.value === '') {
+          this._resetRequestData();
           this.$.books.generateRequest();
         }
       },
@@ -279,14 +277,17 @@
       getUrlCategory: function(category) {
         var cat = ( category || "todas" )
         var subroute = '/books/category/' + cat;
-        this.set('books', []);
+        this._resetRequestData()
         this.set('isSearchAuto', false);
         this.set('search.category', cat);
         this.set('search.text', '');
+        this.set('url', this.getUrl(this.urlApi, subroute));
+      },
+      _resetRequestData: function() {
+        this.set('books', []);
         this.set('currentPage', 0);
         delete this.params.page;
         delete this.search.page;
-        this.set('url', this.getUrl(this.urlApi, subroute));
       }
     });
   </script>
