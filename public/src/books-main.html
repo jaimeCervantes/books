@@ -254,14 +254,6 @@
           this._resetRequestData();
           this.set('isSearchAuto', true);
         }
-
-        if (text && text==='') {
-          this.getAll();
-        }
-      },
-      getAll: function() {
-          this._resetRequestData();
-          this.$.books.generateRequest();
       },
       setCategories: function(categories) {
         if(categories) {
@@ -281,7 +273,6 @@
         this.set('isSearchAuto', false);
         this.set('books', []);
         this.set('currentPage', 0);
-        delete this.params.page;
         delete this.search.page;
       }
     });
