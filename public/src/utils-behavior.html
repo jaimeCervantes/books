@@ -1,15 +1,18 @@
 <link rel="import" href="../bower_components/polymer/polymer.html">
 <script>
-     utilsBehavior = {
-      properties: {
-        urlApi: {
-          type: String,
-          value: '/api'
-        }
-      },
+'use strict';
 
-      getUrl: function(url, params) {
-        return url + params
-      }
-    };
+window.BOOKS = {};
+window.BOOKS.utilsBehavior = {
+  properties: {
+    urlApi: {
+      type: String,
+      value: '/api'
+    }
+  },
+
+  getUrl: function(url, params) {
+    return url + params;
+  }
+};
 </script>

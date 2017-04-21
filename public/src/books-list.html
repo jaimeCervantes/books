@@ -152,7 +152,8 @@
   </template>
 
   <script>
-    Polymer({
+  'use strict';
+    window.Polymer({
       is: 'books-list',
       properties: {
         data: {
@@ -181,7 +182,7 @@
           notify: true
         }
       },
-      behaviors: [utilsBehavior],
+      behaviors: [window.BOOKS.utilsBehavior],
       observers:[
         '_getData(data)'
       ],
@@ -196,7 +197,7 @@
       },
       _getData: function(data) {
         var books = this.books || [];
-        this.set('books', books.concat(this.data.items) );
+        this.set('books', books.concat(data.items) );
       },
       hasMoreBooks: function(pages) {
         return ((pages-1) > this.currentPage);
