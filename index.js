@@ -1,7 +1,10 @@
+'use strict';
+
 var express = require('express');
 var bodyParser = require('body-parser')
 var path = require('path');
 var wagner = require('wagner-core');
+var compression = require('compression');
 var port = process.env.PORT || '3000';
 
 require('./api/connection.js')(wagner);
@@ -10,6 +13,7 @@ var app = express();
 app.set('port', port);
 var books = require('./api/items')(wagner);
 
+app.use(compression());
 app.use(bodyParser.json());
 app.use(express.static(path.join(__dirname, './public/')));
 
