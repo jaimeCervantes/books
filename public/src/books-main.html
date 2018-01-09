@@ -273,6 +273,9 @@
         this.set('isSearchAuto', false);
         this.set('books', []);
         this.set('currentPage', 0);
+        // reset page to 0 because sometimes the user can click and "Ver más libros" button
+        // The correct way is to use events with mediator pattern to change these request data
+        this.set('params.page', 0);
         delete this.search.page;
       }
     });

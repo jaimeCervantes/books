@@ -137,7 +137,7 @@
 
       <template is="dom-if" if="[[hasMoreBooks(data.pagination.pages)]]">
         <div class="see-more-container">
-          <paper-button raised on-tap="_getMoreBooks" class="green see-more">
+          <paper-button raised on-tap="_getMoreBooks" disabled="[[loading]]" class$="[[btnClasses]]">
             <paper-spinner-lite active="[[loading]]" class="pink"></paper-spinner-lite>Ver más libros
           </paper-button>  
         </div>
@@ -166,7 +166,8 @@
         loading: {
           type: Boolean,
           value: true,
-          notify: true
+          notify: true,
+          observer: 'loadingChange'
         },
         books: {
           type: Array,
@@ -208,6 +209,13 @@
           this.set('search.page', this.currentPage);
         } else {
           this.set('params.page', this.currentPage);
+        }
+      },
+      loadingChange (loading) {
+        if(loading) {
+          this.set('btnClasses', 'see-more disabled');
+        } else {
+          this.set('btnClasses', 'green see-more');
         }
       }
     });
