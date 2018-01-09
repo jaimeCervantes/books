@@ -130,13 +130,14 @@
     <app-drawer-layout fullbleed>
       <!-- Drawer content -->
       <app-drawer id="drawer">
-        <app-toolbar>Categorías</app-toolbar>
-        <iron-selector selected="{{categoryName}}" attr-for-selected="name" class="drawer-list" role="navigation">
+        <app-toolbar>Sec. Gral. Ignacio Mejía</app-toolbar>
+        <img src="../images/logo.jpg" alt="" width="240">
+        <!-- <iron-selector selected="{{categoryName}}" attr-for-selected="name" class="drawer-list" role="navigation">
           <a name="Todas" href="/categoria/todas">Todas</a>
           <template is="dom-repeat" items=[[categories]] as=cat index-as=index>
            <a name="[[cat._id]]" href$="/categoria/[[cat._id]]">[[cat._id]] <paper-badge label="[[cat.num]]"></paper-badge></a>          
           </template>
-        </iron-selector>
+        </iron-selector> -->
       </app-drawer>
 
       <!-- Main content -->
