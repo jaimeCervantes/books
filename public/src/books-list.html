@@ -7,6 +7,7 @@
 <link rel="import" href="../bower_components/paper-spinner/paper-spinner.html">
 <link rel="import" href="../bower_components/paper-spinner/paper-spinner-lite.html">
 
+<link rel="import" href="./components/b-expand.html">
 <link rel="import" href="./utils-behavior.html">
 
 <dom-module id="books-list">
@@ -39,7 +40,8 @@
         margin-bottom: 0.2rem;
         text-overflow: ellipsis;
         display: block;
-        white-space: nowrap;
+        /* max-height: 200px; */
+        white-space: pre-wrap;
       }
 
       .card-content p {
@@ -128,7 +130,7 @@
       <template is="dom-repeat" items="[[books]]" as="book">
         <paper-card heading="[[book.name]]" image="[[getImg(book.img)]]" alt="image" elevation="2" fade-image="true">
           <div class="card-content">
-            <p class="description" hidden$="[[!book.description]]">[[book.description]]</p>
+            <b-expand hidden$="[[!book.description]]" content="[[book.description]]"></b-expand>
             <p hidden$="[[!book.author]]"><span class="highlight">Autor:</span> [[book.author]]</p>
             <p hidden$="[[!book.publisher]]"><span class="highlight">Editorial:</span> [[book.publisher]]</p>
           </div>
