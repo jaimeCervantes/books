@@ -23,16 +23,6 @@
           margin-bottom: 2rem;
           margin-right: 3.3333%;
         };
-
-        --paper-card-header-image: {
-          height: 200px;
-        }
-
-        --paper-card-header-image-text: {
-          background-color: white;
-          opacity: 0.9;
-          padding: 1rem;
-        }
       }
 
       .card-content p.description{
@@ -48,6 +38,14 @@
         margin-top: 0;
         padding-top: 0;
         margin-bottom: 0.2rem;
+      }
+
+      .card-content img {
+        display: block;
+        margin: 0 auto;
+        max-width: 100%;
+        min-height: 200px;
+        max-height: 300px;
       }
 
       .card-content .highlight {
@@ -128,8 +126,10 @@
     </style>
     <div class="books-wrapper layout horizontal wrap justify">
       <template is="dom-repeat" items="[[books]]" as="book">
-        <paper-card heading="[[book.name]]" image="[[getImg(book.img)]]" alt="image" elevation="2" fade-image="true">
+        <paper-card elevation="2">
           <div class="card-content">
+            <p style="font-size: 1.5rem;">[[book.name]]</p>
+            <img src="[[getImg(book.img)]]" alt="[[book.name]]">
             <b-expand hidden$="[[!book.description]]" content="[[book.description]]"></b-expand>
             <p hidden$="[[!book.author]]"><span class="highlight">Autor:</span> [[book.author]]</p>
             <p hidden$="[[!book.publisher]]"><span class="highlight">Editorial:</span> [[book.publisher]]</p>
